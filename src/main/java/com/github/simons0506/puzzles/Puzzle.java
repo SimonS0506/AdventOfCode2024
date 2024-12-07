@@ -18,9 +18,9 @@ public abstract class Puzzle {
         return new Solution(solvePart1(input), solvePart2(input));
     }
 
-    protected abstract int solvePart1(List<String> input);
+    protected abstract long solvePart1(List<String> input);
 
-    protected abstract int solvePart2(List<String> input);
+    protected abstract long solvePart2(List<String> input);
 
     private List<String> getInput() {
         return FileReader.read(fileName);

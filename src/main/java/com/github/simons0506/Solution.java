@@ -1,6 +1,6 @@
 package com.github.simons0506;
 
-public record Solution(int solutionPart1, int solutionPart2) {
+public record Solution(long solutionPart1, long solutionPart2) {
 
     @Override
     public String toString() {

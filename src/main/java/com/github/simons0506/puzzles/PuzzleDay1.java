@@ -14,10 +14,10 @@ public class PuzzleDay1 extends Puzzle {
     }
 
     @Override
-    protected int solvePart1(List<String> input) {
+    protected long solvePart1(List<String> input) {
         List<Integer> leftNumbers = getLeftNumbers(input).stream().sorted(Integer::compareTo).toList();
         List<Integer> rightNumbers = getRightNumbers(input).stream().sorted(Integer::compareTo).toList();
-        int totalDifference = 0;
+        long totalDifference = 0;
         for (int index = 0; index < leftNumbers.size(); index++) {
             totalDifference += Math.abs(leftNumbers.get(index) - rightNumbers.get(index));
         }
@@ -25,7 +25,7 @@ public class PuzzleDay1 extends Puzzle {
     }
 
     @Override
-    protected int solvePart2(List<String> input) {
+    protected long solvePart2(List<String> input) {
         Map<Integer, Long> countPerNumberInRightList = getRightNumbers(input)
             .stream()
             .collect(groupingBy(Function.identity(), Collectors.counting()));
@@ -33,8 +33,7 @@ public class PuzzleDay1 extends Puzzle {
             .stream()
             .map(number -> number * countPerNumberInRightList.getOrDefault(number, 0L))
             .reduce(Long::sum)
-            .map(Long::intValue)
-            .orElse(0);
+            .orElse(0L);
     }
 
     private List<Integer> getLeftNumbers(List<String> input) {
