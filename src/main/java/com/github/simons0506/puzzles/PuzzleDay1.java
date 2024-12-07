@@ -1,6 +1,11 @@
 package com.github.simons0506.puzzles;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
 
 public class PuzzleDay1 extends Puzzle {
 
@@ -9,7 +14,7 @@ public class PuzzleDay1 extends Puzzle {
     }
 
     @Override
-    protected int solveWithInput(List<String> input) {
+    protected int solvePart1(List<String> input) {
         List<Integer> leftNumbers = getLeftNumbers(input).stream().sorted(Integer::compareTo).toList();
         List<Integer> rightNumbers = getRightNumbers(input).stream().sorted(Integer::compareTo).toList();
         int totalDifference = 0;
@@ -17,6 +22,19 @@ public class PuzzleDay1 extends Puzzle {
             totalDifference += Math.abs(leftNumbers.get(index) - rightNumbers.get(index));
         }
         return totalDifference;
+    }
+
+    @Override
+    protected int solvePart2(List<String> input) {
+        Map<Integer, Long> countPerNumberInRightList = getRightNumbers(input)
+            .stream()
+            .collect(groupingBy(Function.identity(), Collectors.counting()));
+        return getLeftNumbers(input)
+            .stream()
+            .map(number -> number * countPerNumberInRightList.getOrDefault(number, 0L))
+            .reduce(Long::sum)
+            .map(Long::intValue)
+            .orElse(0);
     }
 
     private List<Integer> getLeftNumbers(List<String> input) {
