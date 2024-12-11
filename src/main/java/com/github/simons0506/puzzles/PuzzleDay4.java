@@ -19,7 +19,43 @@ public class PuzzleDay4 extends Puzzle {
 
     @Override
     protected long solvePart2(List<String> input) {
-        return 0;
+        long count = 0L;
+        char[][] grid = convertToGrid(input);
+        for (int row = 1; row < grid.length - 1; row++) {
+            for (int col = 1; col < grid[0].length - 1; col++) {
+                if (isXmas(grid, row, col)) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    private boolean isXmas(char[][] grid, int row, int col) {
+        char[] leftDiagonal = new char[3];
+        leftDiagonal[0] = grid[row - 1][col - 1];
+        leftDiagonal[1] = grid[row][col];
+        leftDiagonal[2] = grid[row + 1][col + 1];
+        char[] rightDiagonal = new char[3];
+        rightDiagonal[0] = grid[row - 1][col + 1];
+        rightDiagonal[1] = grid[row][col];
+        rightDiagonal[2] = grid[row + 1][col - 1];
+        return isMas(leftDiagonal) && isMas(rightDiagonal);
+    }
+
+    private boolean isMas(char[] chars) {
+        String concatenated = concatenate(chars);
+        long countForwards = Pattern
+            .compile("MAS")
+            .matcher(concatenated)
+            .results()
+            .count();
+        long countBackwards = Pattern
+            .compile("SAM")
+            .matcher(concatenated)
+            .results()
+            .count();
+        return countForwards + countBackwards == 1;
     }
 
     private long countHorizontally(char[][] grid) {
@@ -58,7 +94,7 @@ public class PuzzleDay4 extends Puzzle {
         for (int row = 0; row < grid.length; row++) {
             List<Character> diagonal = new ArrayList<>();
             for (int col = 0; col < grid[row].length; col++) {
-                if(row + col < grid.length) {
+                if (row + col < grid.length) {
                     diagonal.add(grid[row + col][col]);
                 }
             }
@@ -82,7 +118,7 @@ public class PuzzleDay4 extends Puzzle {
             List<Character> diagonal = new ArrayList<>();
             for (int col = grid[row].length - 1; col >= 0; col--) {
                 int rowToCheck = row + (grid[row].length - col - 1);
-                if(rowToCheck < grid.length) {
+                if (rowToCheck < grid.length) {
                     diagonal.add(grid[rowToCheck][col]);
                 }
             }
@@ -103,7 +139,7 @@ public class PuzzleDay4 extends Puzzle {
 
     private char[] getVerticalLine(char[][] grid, int index) {
         char[] verticalLine = new char[grid.length];
-        for(int row = 0; row < grid.length; row++) {
+        for (int row = 0; row < grid.length; row++) {
             verticalLine[row] = grid[row][index];
         }
         return verticalLine;
